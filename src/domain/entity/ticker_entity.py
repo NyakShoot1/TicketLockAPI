@@ -31,7 +31,6 @@ class TicketEntity:
         if self.reserved_until and self.reserved_until.tzinfo is None:
             self.reserved_until = self.reserved_until.replace(tzinfo=timezone.utc)
 
-            # Теперь сравнение с current_time (которое тоже в UTC) сработает!
         if self.status == TicketStatus.RESERVED and self.reserved_until > current_time:
             raise ValueError("Билет временно забронирован другим пользователем")
 

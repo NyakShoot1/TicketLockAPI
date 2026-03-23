@@ -14,5 +14,5 @@ class UserRead(BaseModel):
     email: EmailStr
     role: UserRole # todo убрать потом
 
-    # Эта магия позволяет Pydantic'у читать данные из нашего класса UserEntity
+    # Эта Pydantic'у читать данные из нашего класса UserEntity
     model_config = ConfigDict(from_attributes=True)

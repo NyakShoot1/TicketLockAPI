@@ -23,11 +23,11 @@ class TicketModel(Base):
     # Внешний ключ на таблицу events
     event_id: Mapped[int] = mapped_column(ForeignKey("events.id"))
 
-    # Внешний ключ на таблицу users (nullable=True, потому что билет может быть ничьим)
+    # Внешний ключ на таблицу users
     reserved_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
     reserved_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
-    # ОБРАТНЫЕ СВЯЗИ (Чтобы мы могли написать ticket.event.title или ticket.user.email)
+    # ОБРАТНЫЕ СВЯЗИ
     event: Mapped["EventModel"] = relationship(back_populates="tickets")
     user: Mapped["UserModel"] = relationship(back_populates="tickets")
 

@@ -32,7 +32,6 @@ class SqlAlchemyEventRepositoryImpl(IEventRepository):
         return [e.to_entity() for e in result.scalars().all()]
 
     async def find_by_id(self, id_: int) -> EventEntity | None:
-        # В SQLAlchemy 2.0 session.get — самый быстрый способ найти по ID
         db_event: EventModel | None = await self.session.get(EventModel, id_)
 
         if not db_event:

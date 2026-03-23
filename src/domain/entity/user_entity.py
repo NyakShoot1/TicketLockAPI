@@ -29,9 +29,5 @@ class UserEntity:
         if not self.hashed_password:
             raise ValueError("Хэш пароля не может быть пустым")
 
-    def is_admin(self) -> bool:
-        """Вспомогательный бизнес-метод"""
-        return self.role == UserRole.ADMIN
-
     def set_role(self, role: UserRole) -> None:
         self.role = role

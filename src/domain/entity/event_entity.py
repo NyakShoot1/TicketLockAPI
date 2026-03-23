@@ -24,7 +24,7 @@ class EventEntity:
         if not self.location:
             raise ValueError("Место проведения не может быть пустым")
 
-        # 3. Работа со временем (САМОЕ ВАЖНОЕ В ЭТОМ ПРОЕКТЕ)
+        # 3. Работа со временем
         # Если дата пришла без таймзоны (naive), принудительно ставим UTC
         if self.event_date.tzinfo is None:
             self.event_date = self.event_date.replace(tzinfo=timezone.utc)

@@ -21,7 +21,6 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="SubTracker", lifespan=lifespan)
 
-# Подключаем роуты
 app.include_router(api_v1_router)
 
 

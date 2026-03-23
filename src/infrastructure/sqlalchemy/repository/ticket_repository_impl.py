@@ -55,7 +55,7 @@ class SqlAlchemyTicketRepositoryImpl(ITicketRepository):
         pass
 
     async def create_bulk(self, tickets: list[TicketEntity]) -> None:
-        """Сверхбыстрая массовая вставка билетов"""
+        """Массовая вставка билетов"""
         if not tickets:
             return
 
@@ -74,8 +74,7 @@ class SqlAlchemyTicketRepositoryImpl(ITicketRepository):
             for t in tickets
         ]
 
-        # 2. ВЫПОЛНЯЕМ БАЛК ИНСЕРТ!
-        # Один запрос вместо тысяч.
+        # 2. ВЫПОЛНЯЕМ
         await self.session.execute(insert(TicketModel), ticket_dicts)
 
     async def findall(self) -> Sequence[TicketEntity]:
@@ -86,7 +85,6 @@ class SqlAlchemyTicketRepositoryImpl(ITicketRepository):
 
     async def update(self, entity: TicketEntity) -> TicketEntity:
         """Обновление билета (статус, время брони, id юзера)"""
-        # Используем merge для обновления по ID
         db_ticket = await self.session.merge(TicketModel.from_entity(entity))
         await self.session.flush()
         return entity

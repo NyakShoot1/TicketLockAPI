@@ -16,7 +16,6 @@ class DbSettings(BaseModel):
 
     @property
     def url(self) -> str:
-        # Используем драйвер asyncpg для асинхронности
         return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
 
 
@@ -36,7 +35,7 @@ class Setting(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_file=".env",
-        env_nested_delimiter="__",  # Позволяет писать DB__HOST=... в .env
+        env_nested_delimiter="__",
         env_prefix="DB_",
         extra="ignore"
     )

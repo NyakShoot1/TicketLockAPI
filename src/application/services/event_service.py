@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from fastapi import HTTPException
 
 from src.core.unit_of_work import AbstractUnitOfWork
@@ -17,7 +15,6 @@ class EventService:
     async def create_event_with_tickets(self, event_data: EventCreate,
                                         ticket_data: TicketCreateForEvent) -> EventEntity:
         async with self._uow:
-            # 1. Собираем Entity вручную (без from_schema)
             try:
                 new_event = EventEntity(
                     id=None,
@@ -28,24 +25,21 @@ class EventService:
             except ValueError as e:
                 raise HTTPException(status_code=400, detail=str(e))
 
-            # 2. Сохраняем мероприятие
             saved_event = await self._uow.events.create(new_event)
 
-            # 3. Генерируем билеты
             tickets_to_create = [
                 TicketEntity(
                     id=None,
                     event_id=saved_event.id,
                     seat_number=i,
-                    price=ticket_data.price,  # В схеме это уже Decimal
+                    price=ticket_data.price,
                     status=TicketStatus.AVAILABLE,
                     reserved_by_user_id=None,
                     reserved_until=None,
                 )
-                for i in range(1, event_data.total_tickets + 1)  # Исправил tickets на total_tickets
+                for i in range(1, event_data.total_tickets + 1)
             ]
 
-            # 4. Сохраняем билеты через репозиторий БИЛЕТОВ (self._uow.tickets)
             await self._uow.tickets.create_bulk(tickets_to_create)
 
             await self._uow.commit()
